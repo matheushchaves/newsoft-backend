@@ -2,16 +2,15 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { config } from 'dotenv';
-//import * as morgan from 'morgan';
+import { join } from 'path';
+import * as express from 'express';
+
 config(); // Carrega as variáveis de ambiente do arquivo .env
 
 const PORT = process.env.PORT || 3000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  // Configuração do Morgan
-  // app.use(morgan('dev'));
 
   // Configuração do Swagger
   const config = new DocumentBuilder()
@@ -23,6 +22,12 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
+
+  // Configuração do Express para servir o arquivo swagger.json
+  const expressApp = express();
+  expressApp.use(express.static(join(__dirname, '../swagger')));
+  app.use('/swagger-json', expressApp);
+
   await app.listen(PORT);
 }
 bootstrap();
