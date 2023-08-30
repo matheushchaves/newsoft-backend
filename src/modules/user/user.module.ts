@@ -1,6 +1,6 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+
 import { UserController } from './controllers/user.controller';
 import { UserService } from './services/user.service';
 import { UserSchema } from './user.schema';
@@ -8,16 +8,6 @@ import { AuthModule } from 'src/modules/auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: process.env.CONNECTION_STRING_MONGO,
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }),
-      inject: [ConfigService],
-    }),
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     AuthModule
   ],

@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Param, Put, Delete, Query, NotFoundExcepti
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
-import { PaginationDto } from '../dtos/pagination.dto';
+import { PaginationDto } from '../../../shared/dtos/pagination.dto';
 import { LoginDto } from '../dtos/login.dto';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { JwtAuthGuard } from 'src/modules/auth/jwt-auth/jwt-auth.guard';
