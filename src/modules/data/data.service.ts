@@ -9,10 +9,24 @@ export class DataService {
     @InjectModel('CollectionMetadata') private readonly metadataModel: Model<CollectionMetadata>,
   ) {}
 
+  
   async saveCollectionMetadata(name: string, structure: any) {
+    // Save metadata to the existing metadata collection
     const metadata = new this.metadataModel({ name, structure });
-    return await metadata.save();
+    await metadata.save();
+    
+    // Create a new collection based on the provided name
+    const newCollection = this.metadataModel.db.collection(name);
+    
+    // If a structure is defined, insert a dummy document and remove it immediately
+    if (structure) {
+      const dummyDoc = await newCollection.insertOne(structure);
+      await newCollection.deleteOne({ _id: dummyDoc.insertedId });
+    }
+    
+    return metadata;
   }
+
 
   async getAllMetadata() {
     return await this.metadataModel.find().exec();

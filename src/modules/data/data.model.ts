@@ -7,5 +7,7 @@ export interface CollectionMetadata extends Document {
 
 export const CollectionMetadataSchema = new Schema({
   name: { type: String, required: true },
-  structure: { type: Schema.Types.Mixed, required: true }
+  structure: { type: Schema.Types.Mixed, required: true },
+  dynamicTable: { type: Schema.Types.Mixed },
+  dynamicEdit: { type: Schema.Types.Mixed }
 });
